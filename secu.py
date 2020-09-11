@@ -3,10 +3,13 @@ from datetime import timedelta
 file = pyshark.FileCapture('03.pcap')
 
 dico = dict()
-# tuple (compteur,[ports],dernier_temps)
+#  [compteur,[ports],dernier_temps]
+ignored_ips = []
 delta = timedelta(milliseconds=10)
 for p in file:
     ip = p.ip.src
+    if ip in ignored_ips:
+        continue
     port = 0
     if hasattr(p,'udp'):
         port = p.udp.port
@@ -24,4 +27,5 @@ for p in file:
             dico[p.ip.src][0]+=1
             if dico[p.ip.src][0] == 50:
                 print("Warning! ",p.ip.src," is scanning you")
+                ignored_ips.append(p.ip.src)
         dico[p.ip.src][2]=p.sniff_time
