@@ -1,6 +1,6 @@
 import pyshark
 from datetime import timedelta
-file = pyshark.FileCapture('03.pcap')
+file = pyshark.FileCapture('03.pcap', display_filter='udp or (tcp.flags.syn==1 and tcp.flags.ack==0)')
 
 dico = dict()
 #  [compteur,[ports],dernier_temps]
