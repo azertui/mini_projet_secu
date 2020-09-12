@@ -1,3 +1,5 @@
+# Eloïse Stein
+# Rauch Arthur
 import pyshark
 import sys
 import argparse
