@@ -23,14 +23,14 @@ delta = timedelta(milliseconds=10) # threshold
 # analyze the type of packets sent to see which scan was used,
 # we don't need to check how often the attacker has sent these packets
 def scan_type(filter):
-    sS = False
-    sT = False
-    sN = False
-    sF = False
-    sX = False
     dico_scan = dict()
     for ip in ignored_ips:
         file = pyshark.FileCapture(args.file, display_filter=filter + " and ip.src==" + ip)
+        sS = False
+        sT = False
+        sN = False
+        sF = False
+        sX = False
         for p in file:
             if (p.tcp.flags.raw_value=="2"): # SYN
                 dico_scan[(p.tcp.srcport, p.tcp.dstport)] = "syn"
@@ -78,11 +78,6 @@ def scan_type(filter):
             print(p.ip.src, " uses Xmas scan!")
         if (sT==False and sS==False and sN==False and sF==False and sX==False):
             print("Unable to identify the scan used by ", p.ip.src)
-        sT = False
-        sS = False
-        sN = False
-        sF = False
-        sX = False
 
 for p in file:
     ip = p.ip.src
